@@ -1,0 +1,35 @@
+name: HawkScan
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build-and-scan:
+    name: Build and Scan
+    runs-on: ubuntu-latest
+    env:
+      COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+      BRANCH_NAME: ${{ github.head_ref }}
+      APP_ENV: GitHub Actions
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Setup Java and Gradle cache
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt' # See 'Supported distributions' for available options
+          java-version: '11'
+          cache: gradle
+
+      - name: Build and run the app
+        run: docker-compose up --build --detach
+
+      - name: Test with HawkScan
+        uses: stackhawk/hawkscan-action@v2.1.2
+        continue-on-error: true
+        with:
+          apiKey: ${{ secrets.HAWK_API_KEY }}

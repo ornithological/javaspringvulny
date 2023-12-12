@@ -1,37 +1,42 @@
 app:
-  applicationId: ${APP_ID:dacc7d3e-babc-47d2-b040-ab117ab04526}
-  env: ${APP_ENV:dev}
+  applicationId: ${APP_ID:f3f2667a-4001-4dae-8e87-3d89043a6f87}
   host: ${APP_HOST:https://localhost:9000}
+  env: ${APP_ENV:Development}
   waitForAppTarget:
-    path: /
-    waitTimeoutMillis: 200000
-    pollDelay: 6000
+    path: /login
+    waitTimeoutMillis: 500
+    pollDelay: 3000
   excludePaths:
     - "/logout"
-#    - "/login-form-multi"
-#    - "/login-code"
   antiCsrfParam: "_csrf"
+  openApiConf:
+    path: /openapi
   authentication:
-    loggedInIndicator: "\\QSign Out\\E"
-    loggedOutIndicator: ".*Location:.*/login.*"
     usernamePassword:
-      type: FORM
-      loginPath: /login
-      loginPagePath: /login
+      type: JSON
+      loginPath: /api/jwt/auth/signin
       usernameField: username
       passwordField: password
-      scanUsername: "user"
-      scanPassword: "password"
-    cookieAuthorization:
-      cookieNames:
-        - "JSESSIONID"
+      scanUsername: "${SCAN_USERNAME:user}"
+      scanPassword: "${SCAN_PASSWORD:password}"
+    tokenExtraction:
+      type: TOKEN_PATH
+      value: "token"
+    tokenAuthorization:
+      type: HEADER
+      value: Authorization
+      tokenType: Bearer
     testPath:
-      path: /search
-      success: "HTTP.*200.*"
+      path: /api/jwt/items/search/i
+      success: ".*200.*"
+    loggedInIndicator: "\\QSign Out\\E"
+    loggedOutIndicator: ".*Location:.*/login.*"
 hawk:
   spider:
-    maxDurationMinutes: 5
-#  config:
-#    - "scanner.analyser.redirectEqualsNotFound=false"
-#    - "scanner.analyser.followRedirect=true"
-
+    base: true
+  failureThreshold: high
+tags:
+  - name: _STACKHAWK_GIT_COMMIT_SHA
+    value: ${COMMIT_SHA:}
+  - name: _STACKHAWK_GIT_BRANCH
+    value: ${GITHUB_HEAD_REF:}
