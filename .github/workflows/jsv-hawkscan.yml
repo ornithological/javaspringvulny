@@ -30,6 +30,8 @@ jobs:
 
       - name: Test with HawkScan
         uses: stackhawk/hawkscan-action@v2.1.2
+        env:
+          NO_PROGRESS: true
         continue-on-error: true
         with:
           apiKey: ${{ secrets.HAWK_API_KEY }}

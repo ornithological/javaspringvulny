@@ -4,7 +4,7 @@ app:
   env: ${APP_ENV:Development}
   waitForAppTarget:
     path: /login
-    waitTimeoutMillis: 60000
+    waitTimeoutMillis: 180000
     pollDelay: 3000
     
   excludePaths:
