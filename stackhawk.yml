@@ -6,6 +6,7 @@ app:
     path: /login
     waitTimeoutMillis: 180000
     pollDelay: 3000
+    
   excludePaths:
     - "/logout"
   antiCsrfParam: "_csrf"
