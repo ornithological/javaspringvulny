@@ -1,11 +1,12 @@
 app:
-  applicationId: ${APP_ID:f3f2667a-4001-4dae-8e87-3d89043a6f87}
+  applicationId: ${APP_ID:674ef253-ae44-49cb-ac57-3cc00ecb8dbe}
   host: ${APP_HOST:https://localhost:9000}
   env: ${APP_ENV:Development}
   waitForAppTarget:
     path: /login
-    waitTimeoutMillis: 500
+    waitTimeoutMillis: 60000
     pollDelay: 3000
+    
   excludePaths:
     - "/logout"
   antiCsrfParam: "_csrf"
